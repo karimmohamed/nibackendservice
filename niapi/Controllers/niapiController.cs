@@ -10,7 +10,7 @@ namespace niapi.Controllers
     public class niapiController : Controller
     {
         nibackendservice.Controllers.tokenController nibkendclient = new nibackendservice.Controllers.tokenController();
-        public double getbalance(string cardnumber)
+        public string getbalance(string cardnumber)
         {
             string token = nibkendclient.gettoken(cardnumber);
 
@@ -20,15 +20,11 @@ namespace niapi.Controllers
             IDatabase cache = Connection.GetDatabase();
             // Perform cache operations using the cache object...
             // Simple put of integral data types into the cache
-            cache.StringSet("key1", "value");
-            cache.StringSet("key2", 25);
 
-            // Simple get of data types from the cache
-            string key1 = cache.StringGet("key1");
-            int key2 = (int)cache.StringGet("key2");
             // Perform cache operations using the cache object...
             // Simple put of integral data types into the cache
-            return 10;//(double) cache.HashGet("tokens", token);
+            string balance = cache.HashGet("tokens:"+token, "balance");
+            return balance;
           
         }
 
@@ -44,5 +40,6 @@ namespace niapi.Controllers
                 return lazyConnection.Value;
             }
         }
+       
     }
 }
